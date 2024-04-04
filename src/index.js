@@ -71,17 +71,28 @@ function Header() {
 function Menu() {
   const pizzas = pizzaData;
   const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
-      <h2>Our Menu</h2>
-      {/* use a truthy condition for short circuiting */}
+      <h2>Our menu</h2>
+
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzaData.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
-      ): <p>We're still working on our menu. Please come back later:)</p>}
+        // <> fragments allows for more than one element inside jsx
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>We're still working on our menu. Please come back later :)</p>
+      )}
 
       {/* 
       <Pizza
@@ -102,9 +113,9 @@ function Menu() {
 }
 
 // deconstruct props by getting rid of props and just passing in object props > {pizzaObj}
-function Pizza({pizzaObj}) {
+function Pizza({ pizzaObj }) {
   return (
-    <li className="pizza">
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
       <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
         <h3>{pizzaObj.name}</h3>
@@ -136,7 +147,6 @@ function Footer() {
       )}
     </footer>
   );
-
 }
 
 function Order({ closeHour, openHour }) {
@@ -150,9 +160,6 @@ function Order({ closeHour, openHour }) {
     </div>
   );
 }
-  
-  
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
